@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>移动应急政务应用平台</title>
+<!--/*/<th:block th:include="layout/include::header">/*/-->
+<!--/*/</th:block>/*/-->
+</head>
+<body>
+	<div class="k-content">
+		<div id="topDiv" th:include="layout/header::header"></div>
+		<div id="horizontal">
+			<div id="left-pane" th:include="layout/left::menu"></div>
+			<div id="right-pane" th:include="layout/right::welcome"></div>
+		</div>
+	</div>
+</body>
+</html>

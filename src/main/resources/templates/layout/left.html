@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+<div th:fragment="menu">
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	//选中的菜单ID
+	var selectedMenuId;
+	//菜单树
+	var indexMenuTreeView; 
+ $(document).ready(function() {
+	//头部
+    $("#topDiv").kendoSplitter({
+        orientation: "vertical",
+		panes:[
+			{ collapsible: true,size:"50px"}
+		]
+	});
+	
+    //菜单和内容部分
+    $("#horizontal").kendoSplitter({
+        panes: [
+           { collapsible: true, size: "20%" },
+           { collapsible: false}
+        ]
+	});
+      //菜单树数据源
+	var indexMenuTreeViewDataSource = new kendo.data.HierarchicalDataSource({
+    	  transport: {
+    	    read: {
+    	    	url: "authorization-menu.json",
+    	    	//  url: "menu-tree.json",
+				dataType: "json",
+    	      	type: "POST"
+    	    }
+    	  },
+    	  schema: {
+    		data: "menuTree",
+    	    model: {
+				id: "id",
+				children: "items",
+				hasChildren: true
+    	    }
+    	  }
+	});
+       
+		//菜单树
+		indexMenuTreeView = $('#indexMenuTreeView').kendoTreeView({
+			dataSource: indexMenuTreeViewDataSource,
+			dataTextField: "text",
+			select:function(e){
+	          	var data = this.dataItem(e.node);
+	        	selectedMenuId = data.id;
+	          	var href = data.href;
+	          	$("#right").load(href);
+			}
+		}).data("kendoTreeView");
+      
+		var treeview = $("#indexMenuTreeView").data("kendoTreeView");
+       	var bar = treeview.findByText("值班快报");
+       	//var bar = indexMenuTreeView.element.find(".k-item:first");
+       	if ( bar != null ) {
+       		//alert("1");
+       		treeview.select(bar);
+    		//alert("2");
+    		$("#right").load("dutyreport/zbkb-list");
+       	} else {
+			alert("3");
+       	}
+       	
+     $("#right").load("dutyreport/zbkb-list");
+    	
+ });
+  /*]]>*/
+	</script>
+	<div class="pane-content">
+		<div id="indexMenuTreeView"></div>
+	</div>
+</div>
+</body>
+</html>

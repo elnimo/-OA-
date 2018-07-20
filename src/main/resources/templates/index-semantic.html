@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>semantic搭建</title>
+<script type="text/javascript"  th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+<link th:href="@{/webjars/Semantic-UI/1.2.0/semantic.css}" rel="stylesheet" type="text/css" />
+<script type="text/javascript"  th:src="@{/webjars/Semantic-UI/1.2.0/semantic.js}"></script>
+<script type="text/javascript"  th:src="@{/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js}"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+function loadContent(url)
+{
+	$("#right").load(url);
+}
+/*]]>*/
+</script>
+</head>
+<body>
+<div class="ui celled divided grid">
+<!--   <div class="two wide column"></div> -->
+<!--   <div class="twelve wide column" style="text-align:center"><img class="ui image" th:src="@{images/bg_body.jpg}" /></div> -->
+<!--   <div class="two wide column"></div> -->
+	 <div class="row">
+	      <div class="column">
+	           <div class="ui segment" >
+		           <div class="content" >
+				        <span th:text="|${#authentication.name},您好|">您好</span>
+						<a th:if="${#authentication.name}!=null"  th:href="logout">注销</a>
+						<a th:if="${#authentication.name}==null" th:href="login.html">登录</a>
+			        </div>
+	           </div>
+	      </div>
+      </div>
+      <div class="row">
+	        <div class="three wide column" th:inline="text">
+	  		<div class="ui vertical menu" style="width:100%">
+	  		    <div class="item" th:each="menu1:${menuList}" th:if="${#lists.size(menu1.children)}>0" >[[${menu1.menuName}]]
+		  		      <div class="menu"  th:if="${#lists.size(menu1.children)}>0" th:each="menu2:${menu1.children}" >
+		  		           <a class="item" th:if="${#lists.size(menu2.children)}==0"  th:text="${menu2.menuName}" th:attr="href='javascript:loadContent(\''+${menu2.menuUrl}+'\')'"></a>
+		  		       </div>
+		  		       <div class="menu" th:each="menu2:${menu1.children}">
+		  		           <div class="item" th:if="${#lists.size(menu2.children)}>0">[[${menu2.menuName}]]
+		  		              <div class="menu" th:each="menu3:${menu2.children}">
+		  		                 <a class="item" th:if="${#lists.size(menu3.children)}==0"  th:text="${menu3.menuName}" th:attr="href='javascript:loadContent(\''+${menu3.menuUrl}+'\')'"></a>
+		  		                 <!-- 再加判断。。。。 -->
+		  		              </div>
+		  		           </div>
+		  		       </div>
+		  		 </div>
+		  		 <div class="link item"  th:each="menu1:${menuList}" th:if="${#lists.size(menu1.children)}==0" th:text="${menu1.menuName}" th:attr="href='javascript:loadContent(\''+${menu1.menuUrl}+'\')'"></div>
+			   </div>
+	        </div>
+	        <div class="eleven wide column">
+  				<div class="ui segment"  id="right" style="height:100%">欢迎</div>
+  			</div>
+      </div>
+</div>
+</body>
+</html>
